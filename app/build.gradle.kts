@@ -7,11 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.dailyquote"
-    compileSdk {
-        version = release(36) {
-            minorApiLevel = 1
-        }
-    }
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.example.dailyquote"
@@ -50,6 +46,10 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
 
+    // Views/Fragments integration
+    implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui)
+
     implementation(libs.retrofit)
     implementation(libs.retrofit.gson)
 
@@ -63,4 +63,6 @@ dependencies {
 
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    implementation(libs.lottie)
 }

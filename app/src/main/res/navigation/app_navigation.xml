@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.dailyquote.presentation.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/fragment_splash">
+        <action
+            android:id="@+id/splashFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.example.dailyquote.presentation.onboarding.OnboardingFragment"
+        android:label="Onboarding"
+        tools:layout="@layout/fragment_onboarding">
+        <action
+            android:id="@+id/onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.dailyquote.presentation.home.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home" />
+
+    <navigation
+        android:id="@+id/categories_navigation"
+        app:startDestination="@id/categoriesFragment">
+        <fragment
+            android:id="@+id/categoriesFragment"
+            android:name="com.example.dailyquote.presentation.categories.CategoriesFragment"
+            android:label="Categories"
+            tools:layout="@layout/fragment_categories" />
+        <action
+            android:id="@+id/action_categoriesFragment_to_quotesFragment"
+            app:destination="@id/quotesFragment" />
+        <argument
+            android:name="category"
+            app:argType="string" />
+    </navigation>
+
+
+    <fragment
+        android:id="@+id/quotesFragment"
+        android:name="com.example.dailyquote.presentation.quotes.QuotesFragment"
+        android:label="Quotes"
+        tools:layout="@layout/fragment_quotes" />
+
+
+    <fragment
+        android:id="@+id/favouritesFragment"
+        android:name="com.example.dailyquote.presentation.favorites.FavoritesFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorites" />
+
+</navigation>

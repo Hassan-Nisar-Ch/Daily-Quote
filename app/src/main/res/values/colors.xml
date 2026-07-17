@@ -2,4 +2,16 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="splash_bg">#13131B</color>
+    <color name="bottom_bar_bg">#1F1F28</color>
+    <color name="card_bg">#34343D</color>
+    <color name="card_stroke">#1AC0C1FF</color>
+    <color name="title_color">#E4E1ED</color>
+    <color name="description_color">#464555</color>
+    <color name="splash_initializing_color">#908FA0</color>
+    <color name="loading_track_color">#C0C1FF</color>
+    <color name="indicator_color">#5B5FEF</color>
+    <color name="onboard_description_color">#C6C5D7</color>
+    <color name="btn_bg">#5B5FEF</color>
+    <color name="btn_txt_color">#F9F6FF</color>
 </resources>

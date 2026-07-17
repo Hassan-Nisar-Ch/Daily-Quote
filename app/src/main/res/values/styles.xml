@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Widget.BottomNav.ActiveIndicator" parent="">
+        <item name="android:width">50dp</item>
+        <item name="android:height">50dp</item>
+        <item name="shapeAppearance">@style/ShapeAppearance.Oval</item>
+        <item name="android:color">@color/btn_bg</item>
+    </style>
+
+    <style name="ShapeAppearance.Oval" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

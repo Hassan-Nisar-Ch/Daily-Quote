@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Widget.BottomNav.ActiveIndicator" parent="">
+    <style name="BottomNavActiveIndicator">
         <item name="android:width">50dp</item>
         <item name="android:height">50dp</item>
-        <item name="shapeAppearance">@style/ShapeAppearance.Oval</item>
+        <item name="shapeAppearance">@style/OvalShape</item>
         <item name="android:color">@color/btn_bg</item>
     </style>
 
-    <style name="ShapeAppearance.Oval" parent="">
+    <style name="OvalShape">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="TopBarTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:fontFamily">@font/libre_caslon_text_regular</item>
+        <item name="android:textColor">@color/title_color</item>
+        <item name="android:textSize">32sp</item>
     </style>
 
 </resources>

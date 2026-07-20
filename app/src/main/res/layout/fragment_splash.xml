@@ -26,20 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:contentDescription="@null"
-            android:padding="24dp"
-            android:scaleType="centerInside"
+            android:scaleType="center"
             android:src="@drawable/ic_quote" />
     </com.google.android.material.card.MaterialCardView>
 
     <TextView
         android:id="@+id/appName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/libre_caslon_text_regular"
+        style="@style/TopBarTitle"
         android:text="@string/app_name"
-        android:textColor="@color/title_color"
-        android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/appDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

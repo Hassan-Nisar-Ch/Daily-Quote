@@ -24,15 +24,11 @@
 
     <TextView
         android:id="@+id/tvTitle"
+        style="@style/TopBarTitle"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="24dp"
-        android:fontFamily="@font/libre_caslon_text_regular"
         android:text="@string/discover_quotes"
         android:textAlignment="center"
-        android:textColor="@color/loading_track_color"
-        android:textSize="32sp"
         app:layout_constraintBottom_toTopOf="@+id/tvDescription"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

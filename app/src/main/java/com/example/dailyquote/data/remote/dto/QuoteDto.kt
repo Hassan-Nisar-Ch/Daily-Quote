@@ -1,6 +1,6 @@
-package com.example.dailyquote.data.model
+package com.example.dailyquote.data.remote.dto
 
-data class Quote(
+data class QuoteDto(
     val quote: String,
     val author: String,
     val categories: List<String>

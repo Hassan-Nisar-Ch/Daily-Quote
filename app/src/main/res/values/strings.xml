@@ -10,9 +10,11 @@
     <string name="discover_quotes">Discover Inspirational Quotes</string>
     <string name="onboarding_description">Find daily inspiration and meaningful quotes to brighten your day.</string>
     <string name="get_started">Get Started</string>
-    <string name="quote_text_placeholder">&quot;%1$s&quot;</string>
-    <string name="quote_example">&quot;The only way to do great work is to love what you do.&quot;</string>
+    <string name="quote_example">The only way to do great work is to love what you do.</string>
     <string name="quote_of_the_day">Quote of the Day</string>
-    <string name="author_name_placeholder">— %1$s</string>
-    <string name="author_example">— steve jobs</string>
+    <string name="author_example">steve jobs</string>
+    <string name="share">Share</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="error">Something went wrong! Please try again</string>
+    <string name="wisdom">Wisdom</string>
 </resources>

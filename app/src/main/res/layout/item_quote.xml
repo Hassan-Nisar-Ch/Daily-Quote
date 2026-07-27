@@ -3,62 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/splash_bg"
-    android:paddingHorizontal="20dp"
-    tools:context=".presentation.home.HomeFragment">
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/TopBarTitle"
-        android:text="@string/home"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_quote_of_day"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/inter_medium"
-        android:gravity="center"
-        android:letterSpacing="0.1"
-        android:text="@string/quote_of_the_day"
-        android:textAllCaps="true"
-        android:textColor="@color/onboard_description_color"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+    android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_quote_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="28dp"
-        app:cardCornerRadius="28dp"
-        app:cardElevation="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/ll_actions"
+        android:id="@+id/card_quote"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_quote_of_day">
-
-        <!--        CardView doesn't accept background from drawable so take a new parent layout inside the-->
-        <!--        CardView and set drawable to it: https://stackoverflow.com/a/51393559-->
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_quote_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/card_bg_color"
-            android:padding="32dp">
+            android:padding="24dp">
 
             <ImageView
                 android:id="@+id/iv_quote_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
                 android:contentDescription="@null"
                 android:src="@drawable/ic_quote"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,55 +38,57 @@
                 android:id="@+id/tv_quote_text"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="18dp"
+                android:autoSizeMaxTextSize="22sp"
+                android:autoSizeMinTextSize="16sp"
+                android:autoSizeStepGranularity="1sp"
+                android:autoSizeTextType="uniform"
                 android:fontFamily="@font/libre_caslon_text_italic"
                 android:gravity="center"
+                android:maxLines="8"
                 android:textColor="@color/white"
-                android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="16sp"
-                android:autoSizeMaxTextSize="26sp"
-                android:autoSizeStepGranularity="1sp"
-                app:layout_constraintBottom_toTopOf="@+id/tv_quote_author"
+                app:layout_constraintBottom_toTopOf="@id/tv_quote_author"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_quote_icon"
+                app:layout_constraintTop_toBottomOf="@id/iv_quote_icon"
                 tools:text="@string/quote_example" />
 
             <TextView
                 android:id="@+id/tv_quote_author"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:alpha="0.8"
+                android:layout_marginTop="14dp"
+                android:alpha=".85"
                 android:fontFamily="@font/inter_medium"
                 android:textColor="@color/onboard_description_color"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_quote_text"
                 tools:text="@string/author_example" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
         android:id="@+id/ll_actions"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
+        android:layout_marginTop="18dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingHorizontal="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/cv_quote_container"
-        app:layout_constraintStart_toStartOf="@+id/cv_quote_container">
+        app:layout_constraintEnd_toEndOf="@+id/card_quote"
+        app:layout_constraintStart_toStartOf="@+id/card_quote"
+        app:layout_constraintTop_toBottomOf="@id/card_quote">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_share"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginHorizontal="8dp"
+            android:id="@+id/btnShare"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             app:backgroundTint="@color/btn_bg_opacity_60"
             app:icon="@drawable/ic_share"
@@ -129,10 +100,10 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_copy"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginHorizontal="8dp"
+            android:id="@+id/btnCopy"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             app:backgroundTint="@color/btn_bg_opacity_60"
             app:icon="@drawable/ic_copy"
@@ -144,10 +115,10 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_save"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginHorizontal="8dp"
+            android:id="@+id/btnSave"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             app:backgroundTint="@color/btn_bg_opacity_60"
             app:icon="@drawable/ic_save"
@@ -159,10 +130,10 @@
             app:strokeWidth="1dp" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_favorite"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_marginHorizontal="8dp"
+            android:id="@+id/btnFavorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginHorizontal="6dp"
             android:layout_weight="1"
             app:backgroundTint="@color/btn_bg_opacity_60"
             app:icon="@drawable/ic_favorite"
@@ -175,29 +146,5 @@
 
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tv_error"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginHorizontal="24dp"
-        android:textColor="@color/white"
-        android:textSize="26sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="@string/error" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

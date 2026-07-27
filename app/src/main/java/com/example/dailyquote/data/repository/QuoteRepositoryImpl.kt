@@ -13,7 +13,7 @@ class QuoteRepositoryImpl @Inject constructor(
     private val apiService: ApiService
 ) : QuoteRepository {
 
-    override fun getQuoteOfTheDay(): Flow<NetworkResult<Quote>> = flow {
+    override fun getQuoteOfTheDay(): Flow<NetworkResult<List<Quote>>> = flow {
         emit(NetworkResult.Loading)
         val result = safeApiCall { apiService.getQuoteOfTheDay() }
         emit(result)

@@ -1,18 +1,31 @@
 package com.example.dailyquote.presentation.categories
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import com.example.dailyquote.R
-class CategoriesFragment : Fragment() {
+import androidx.fragment.app.viewModels
+import com.example.dailyquote.databinding.FragmentCategoriesBinding
+import com.example.dailyquote.presentation.base.BaseFragment
+import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_categories, container, false)
+@AndroidEntryPoint
+class CategoriesFragment : BaseFragment<FragmentCategoriesBinding, CategoriesViewModel>(
+    FragmentCategoriesBinding::inflate
+) {
+
+    override val viewModel: CategoriesViewModel by viewModels()
+
+    private val adapter = CategoryAdapter(
+        onCategoryClick = { viewModel.onCategoryClick(it) }
+    )
+
+    override fun setUpViews() {
+        binding.rvQuotes.adapter = adapter
+    }
+
+    override fun observeData() {
+        launchAndRepeatWithViewLifecycle {
+            viewModel.categoriesFlow.collect { categories ->
+                adapter.submitList(categories)
+            }
+        }
     }
 }

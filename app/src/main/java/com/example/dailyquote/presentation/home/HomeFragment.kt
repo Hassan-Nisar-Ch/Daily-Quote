@@ -1,16 +1,17 @@
 package com.example.dailyquote.presentation.home
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.dailyquote.R
 import com.example.dailyquote.databinding.FragmentHomeBinding
 import com.example.dailyquote.presentation.base.BaseFragment
+import com.example.dailyquote.util.copyToClipboard
+import com.example.dailyquote.util.getBitmapFromView
 import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle
+import com.example.dailyquote.util.saveBitmap
+import com.example.dailyquote.util.shareQuote
+import com.example.dailyquote.util.showToast
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -29,6 +30,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             btnCopy.setOnClickListener {
                 viewModel.onCopyClicked()
             }
+
+            btnFavorite.setOnClickListener {
+                viewModel.onFavoriteClicked()
+            }
+
+            btnSave.setOnClickListener {
+                viewModel.onSaveClicked(cvQuoteContainer)
+            }
         }
     }
 
@@ -42,6 +51,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                         cvQuoteContainer.isVisible = true
                         llActions.isVisible = true
                     }
+                    viewModel.observeFavorite(quote.quote)
                 } else {
                     binding.apply {
                         cvQuoteContainer.isVisible = false
@@ -69,33 +79,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
         }
 
         launchAndRepeatWithViewLifecycle {
+            viewModel.isFavorite.collect { isFavorite ->
+                val icon = if (isFavorite) {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_fav)
+                } else {
+                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
+                }
+                binding.btnFavorite.icon = icon
+            }
+        }
+
+        launchAndRepeatWithViewLifecycle {
             viewModel.event.collect { event ->
                 when (event) {
-                    is HomeViewModel.HomeEvent.ShareQuote -> {
+                    is QuoteEvent.ShareQuote -> {
                         shareQuote(event.quote, event.author)
                     }
 
-                    is HomeViewModel.HomeEvent.CopyQuote -> {
+                    is QuoteEvent.CopyQuote -> {
                         copyToClipboard(event.quote, event.author)
+                    }
+
+                    is QuoteEvent.ShowMessage -> {
+                        showToast(event.message)
+                    }
+
+                    is QuoteEvent.SaveQuote -> {
+                        val bitmap = getBitmapFromView(event.view)
+                        saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
                     }
                 }
             }
         }
-    }
-
-    private fun copyToClipboard(quote: String, author: String) {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("quote", "\"$quote\" - $author")
-        clipboard.setPrimaryClip(clip)
-        Toast.makeText(requireContext(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show()
-    }
-
-    private fun shareQuote(quote: String, author: String) {
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "\"$quote\" - $author")
-            type = "text/plain"
-        }
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.share)))
     }
 }

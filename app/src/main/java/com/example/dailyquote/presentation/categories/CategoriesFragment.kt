@@ -1,6 +1,7 @@
 package com.example.dailyquote.presentation.categories
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.dailyquote.databinding.FragmentCategoriesBinding
 import com.example.dailyquote.presentation.base.BaseFragment
 import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle
@@ -14,17 +15,33 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding, CategoriesVie
     override val viewModel: CategoriesViewModel by viewModels()
 
     private val adapter = CategoryAdapter(
-        onCategoryClick = { viewModel.onCategoryClick(it) }
+        onCategoryClick = { apiName, displayName ->
+            viewModel.onCategoryClick(apiName, displayName)
+        }
     )
 
     override fun setUpViews() {
-        binding.rvQuotes.adapter = adapter
+        binding.rvCategories.adapter = adapter
     }
 
     override fun observeData() {
         launchAndRepeatWithViewLifecycle {
             viewModel.categoriesFlow.collect { categories ->
                 adapter.submitList(categories)
+            }
+        }
+
+        launchAndRepeatWithViewLifecycle {
+            viewModel.event.collect { event ->
+                when (event) {
+                    is CategoriesViewModel.CategoriesEvent.NavigateToQuotes -> {
+                        val action = CategoriesFragmentDirections.actionCategoriesFragmentToQuotesFragment(
+                        category = event.category,
+                        displayName = event.displayName
+                        )
+                        findNavController().navigate(action)
+                    }
+                }
             }
         }
     }

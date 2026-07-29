@@ -5,9 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "quotes")
 data class QuoteEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val quote: String,
+    @PrimaryKey val quote: String,
     val author: String,
-    val categories: List<String>,
-    var isFavorite: Boolean = false
+    val categories: List<String>
 )

@@ -9,7 +9,7 @@ import com.example.dailyquote.databinding.ItemCategoryBinding
 import com.example.dailyquote.domain.model.Category
 
 class CategoryAdapter(
-    private val onCategoryClick: (Category) -> Unit
+    private val onCategoryClick: (apiName: String, displayName: String) -> Unit
 ) : ListAdapter<Category, CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,7 +26,7 @@ class CategoryAdapter(
 
         holder.binding.tvCategory.text = category.displayName
         holder.binding.ivCategory.setImageResource(category.iconResId)
-        holder.binding.root.setOnClickListener { onCategoryClick(category) }
+        holder.binding.root.setOnClickListener { onCategoryClick(category.apiName, category.displayName) }
     }
 
 

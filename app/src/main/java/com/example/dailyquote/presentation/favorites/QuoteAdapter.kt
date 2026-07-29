@@ -2,9 +2,11 @@ package com.example.dailyquote.presentation.favorites
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dailyquote.R
 import com.example.dailyquote.databinding.ItemQuoteBinding
 import com.example.dailyquote.domain.model.Quote
 import com.google.android.material.card.MaterialCardView
@@ -28,20 +30,26 @@ class QuoteAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val quote = getItem(position)
 
-        holder.binding.btnShare.setOnClickListener {
-            onShareClick(quote)
-        }
+        holder.binding.apply {
+            tvQuoteText.text = quote.quote
+            tvQuoteAuthor.text = quote.author
+            btnFavorite.icon = ContextCompat.getDrawable(root.context, R.drawable.ic_fav)
 
-        holder.binding.btnCopy.setOnClickListener {
-            onCopyClick(quote)
-        }
+            btnShare.setOnClickListener {
+                onShareClick(quote)
+            }
 
-        holder.binding.btnSave.setOnClickListener {
-            onSaveClick(holder.binding.cardQuote)
-        }
+            btnCopy.setOnClickListener {
+                onCopyClick(quote)
+            }
 
-        holder.binding.btnFavorite.setOnClickListener {
-            onFavoriteClick(quote)
+            btnSave.setOnClickListener {
+                onSaveClick(cardQuote)
+            }
+
+            btnFavorite.setOnClickListener {
+                onFavoriteClick(quote)
+            }
         }
     }
 

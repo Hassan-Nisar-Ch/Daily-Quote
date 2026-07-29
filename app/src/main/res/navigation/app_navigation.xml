@@ -42,21 +42,25 @@
             android:id="@+id/categoriesFragment"
             android:name="com.example.dailyquote.presentation.categories.CategoriesFragment"
             android:label="Categories"
-            tools:layout="@layout/fragment_categories" />
-        <action
-            android:id="@+id/action_categoriesFragment_to_quotesFragment"
-            app:destination="@id/quotesFragment" />
-        <argument
-            android:name="category"
-            app:argType="string" />
+            tools:layout="@layout/fragment_categories">
+            <action
+                android:id="@+id/action_categoriesFragment_to_quotesFragment"
+                app:destination="@id/quotesFragment" />
+        </fragment>
     </navigation>
-
 
     <fragment
         android:id="@+id/quotesFragment"
         android:name="com.example.dailyquote.presentation.quotes.QuotesFragment"
         android:label="Quotes"
-        tools:layout="@layout/fragment_quotes" />
+        tools:layout="@layout/fragment_quotes">
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="displayName"
+            app:argType="string" />
+    </fragment>
 
 
     <fragment

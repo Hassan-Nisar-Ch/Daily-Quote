@@ -4,7 +4,7 @@ import com.example.dailyquote.data.local.entity.QuoteEntity
 import com.example.dailyquote.data.remote.dto.QuoteDto
 import com.example.dailyquote.domain.model.Quote
 
-fun QuoteDto.toEntity(): QuoteEntity =
+fun Quote.toEntity(): QuoteEntity =
     QuoteEntity(
         quote = quote,
         author = author,
@@ -15,7 +15,13 @@ fun QuoteEntity.toDomain(): Quote =
     Quote(
         quote = quote,
         author = author,
-        categories = categories,
-        isFavorite = isFavorite
+        categories = categories
+    )
+
+fun QuoteDto.toDomain(): Quote =
+    Quote(
+        quote = quote,
+        author = author,
+        categories = categories
     )
 

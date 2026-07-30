@@ -50,8 +50,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                         tvQuoteAuthor.text = quote.author
                         cvQuoteContainer.isVisible = true
                         llActions.isVisible = true
+
+                        val icon = if (quote.isFavorite) {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_fav)
+                        } else {
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
+                        }
+                        btnFavorite.icon = icon
                     }
-                    viewModel.observeFavorite(quote.quote)
                 } else {
                     binding.apply {
                         cvQuoteContainer.isVisible = false
@@ -75,17 +81,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                 } else {
                     binding.tvError.isVisible = false
                 }
-            }
-        }
-
-        launchAndRepeatWithViewLifecycle {
-            viewModel.isFavorite.collect { isFavorite ->
-                val icon = if (isFavorite) {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_fav)
-                } else {
-                    ContextCompat.getDrawable(requireContext(), R.drawable.ic_favorite)
-                }
-                binding.btnFavorite.icon = icon
             }
         }
 

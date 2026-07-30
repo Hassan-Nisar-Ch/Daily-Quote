@@ -4,13 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
 import com.example.dailyquote.domain.repository.QuoteRepository
+import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,10 +23,12 @@ class HomeViewModel @Inject constructor(
     private val quoteRepository: QuoteRepository
 ) : ViewModel() {
 
-    private val _quote = MutableStateFlow<Quote?>(null)
-    val quote: StateFlow<Quote?> = _quote.asStateFlow()
+    private val _rawQuote = MutableStateFlow<Quote?>(null)
+    val quote: StateFlow<Quote?> = combine(_rawQuote, quoteRepository.getFavoriteQuotes()) { raw, favorites ->
+        raw?.copy(isFavorite = favorites.any { it.quote == raw.quote })
+    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    private val currentQuote: Quote? get() = _quote.value
+    private val currentQuote: Quote? get() = quote.value
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -32,9 +38,6 @@ class HomeViewModel @Inject constructor(
 
     private val _event = MutableSharedFlow<QuoteEvent>()
     val event: SharedFlow<QuoteEvent> = _event.asSharedFlow()
-
-    private val _isFavorite = MutableStateFlow(false)
-    val isFavorite: StateFlow<Boolean> = _isFavorite.asStateFlow()
 
     init {
         getQuoteOfTheDay()
@@ -46,20 +49,12 @@ class HomeViewModel @Inject constructor(
             _error.value = null
             try {
                 quoteRepository.getQuoteOfTheDay().collect { quotes ->
-                    _quote.value = quotes.firstOrNull()
+                    _rawQuote.value = quotes.firstOrNull()
                     _isLoading.value = false
                 }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error"
                 _isLoading.value = false
-            }
-        }
-    }
-
-    fun observeFavorite(quote: String) {
-        viewModelScope.launch {
-            quoteRepository.isFavorite(quote).collect { favorite ->
-                _isFavorite.value = favorite
             }
         }
     }
@@ -81,10 +76,16 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun onSaveClicked(view: MaterialCardView) {
+        viewModelScope.launch {
+            _event.emit(QuoteEvent.SaveQuote(view))
+        }
+    }
+
     fun onFavoriteClicked() {
         currentQuote?.let { quote ->
             viewModelScope.launch {
-                if (isFavorite.value) {
+                if (quote.isFavorite) {
                     quoteRepository.deleteQuote(quote)
                     _event.emit(QuoteEvent.ShowMessage("Quote removed from favorites"))
                 } else {
@@ -92,12 +93,6 @@ class HomeViewModel @Inject constructor(
                     _event.emit(QuoteEvent.ShowMessage("Quote added to favorites"))
                 }
             }
-        }
-    }
-
-    fun onSaveClicked(view: com.google.android.material.card.MaterialCardView) {
-        viewModelScope.launch {
-            _event.emit(QuoteEvent.SaveQuote(view))
         }
     }
 }

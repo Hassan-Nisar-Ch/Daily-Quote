@@ -15,7 +15,8 @@ fun QuoteEntity.toDomain(): Quote =
     Quote(
         quote = quote,
         author = author,
-        categories = categories
+        categories = categories,
+        isFavorite = true
     )
 
 fun QuoteDto.toDomain(): Quote =

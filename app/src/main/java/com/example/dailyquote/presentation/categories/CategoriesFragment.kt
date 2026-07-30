@@ -15,8 +15,8 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding, CategoriesVie
     override val viewModel: CategoriesViewModel by viewModels()
 
     private val adapter = CategoryAdapter(
-        onCategoryClick = { apiName, displayName ->
-            viewModel.onCategoryClick(apiName, displayName)
+        onCategoryClick = { name ->
+            viewModel.onCategoryClick(name)
         }
     )
 
@@ -36,8 +36,7 @@ class CategoriesFragment : BaseFragment<FragmentCategoriesBinding, CategoriesVie
                 when (event) {
                     is CategoriesViewModel.CategoriesEvent.NavigateToQuotes -> {
                         val action = CategoriesFragmentDirections.actionCategoriesFragmentToQuotesFragment(
-                        category = event.category,
-                        displayName = event.displayName
+                        category = event.name
                         )
                         findNavController().navigate(action)
                     }

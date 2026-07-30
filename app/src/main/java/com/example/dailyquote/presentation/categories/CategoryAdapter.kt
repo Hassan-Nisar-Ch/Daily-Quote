@@ -9,7 +9,7 @@ import com.example.dailyquote.databinding.ItemCategoryBinding
 import com.example.dailyquote.domain.model.Category
 
 class CategoryAdapter(
-    private val onCategoryClick: (apiName: String, displayName: String) -> Unit
+    private val onCategoryClick: (name: String) -> Unit
 ) : ListAdapter<Category, CategoryAdapter.ViewHolder>(CategoryDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,9 +24,11 @@ class CategoryAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val category = getItem(position)
 
-        holder.binding.tvCategory.text = category.displayName
+        holder.binding.tvCategory.text = category.name.replaceFirstChar {
+            it.titlecase()
+        }
         holder.binding.ivCategory.setImageResource(category.iconResId)
-        holder.binding.root.setOnClickListener { onCategoryClick(category.apiName, category.displayName) }
+        holder.binding.root.setOnClickListener { onCategoryClick(category.name) }
     }
 
 
@@ -34,7 +36,7 @@ class CategoryAdapter(
 
     class CategoryDiffCallback : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(oldItem: Category, newItem: Category): Boolean {
-            return oldItem.apiName == newItem.apiName
+            return oldItem.name == newItem.name
         }
 
         override fun areContentsTheSame(oldItem: Category, newItem: Category): Boolean {

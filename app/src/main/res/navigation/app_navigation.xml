@@ -57,9 +57,6 @@
         <argument
             android:name="category"
             app:argType="string" />
-        <argument
-            android:name="displayName"
-            app:argType="string" />
     </fragment>
 
 

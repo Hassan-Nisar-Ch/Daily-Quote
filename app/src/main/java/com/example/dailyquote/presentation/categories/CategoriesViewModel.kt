@@ -27,13 +27,13 @@ class CategoriesViewModel @Inject constructor(
         _categories.value = categories
     }
 
-    fun onCategoryClick(apiName: String, displayName: String) {
+    fun onCategoryClick(name: String) {
         viewModelScope.launch {
-            _event.emit(CategoriesEvent.NavigateToQuotes(apiName, displayName))
+            _event.emit(CategoriesEvent.NavigateToQuotes(name))
         }
     }
 
     sealed class CategoriesEvent {
-        data class NavigateToQuotes(val category: String, val displayName: String) : CategoriesEvent()
+        data class NavigateToQuotes(val name: String) : CategoriesEvent()
     }
 }

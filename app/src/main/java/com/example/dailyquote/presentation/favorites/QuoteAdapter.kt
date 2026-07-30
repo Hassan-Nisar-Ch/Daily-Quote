@@ -33,7 +33,13 @@ class QuoteAdapter(
         holder.binding.apply {
             tvQuoteText.text = quote.quote
             tvQuoteAuthor.text = quote.author
-            btnFavorite.icon = ContextCompat.getDrawable(root.context, R.drawable.ic_fav)
+            
+            val favoriteIcon = if (quote.isFavorite) {
+                R.drawable.ic_fav
+            } else {
+                R.drawable.ic_favorite
+            }
+            btnFavorite.icon = ContextCompat.getDrawable(root.context, favoriteIcon)
 
             btnShare.setOnClickListener {
                 onShareClick(quote)

@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui)
 
     implementation(libs.retrofit)
+    implementation(libs.okhttp)
     implementation(libs.retrofit.gson)
 
     implementation(libs.lifecycle.viewmodel)

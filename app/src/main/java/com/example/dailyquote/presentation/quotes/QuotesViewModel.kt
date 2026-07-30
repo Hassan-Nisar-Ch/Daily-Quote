@@ -1,5 +1,6 @@
 package com.example.dailyquote.presentation.quotes
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
@@ -10,19 +11,30 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class QuotesViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val quoteRepository: QuoteRepository
 ) : ViewModel() {
 
-    private val _quotes = MutableStateFlow<List<Quote>>(emptyList())
-    val quotes: StateFlow<List<Quote>> = _quotes.asStateFlow()
+    val category: String? = savedStateHandle.get<String>("category")
+
+    private val _rawQuotes = MutableStateFlow<List<Quote>>(emptyList())
+    val quotes: StateFlow<List<Quote>> = combine(_rawQuotes, quoteRepository.getFavoriteQuotes()) { remote, favorites ->
+        remote.map { remoteQuote ->
+            remoteQuote.copy(isFavorite = favorites.any { it.quote == remoteQuote.quote })
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -33,13 +45,17 @@ class QuotesViewModel @Inject constructor(
     private val _event = MutableSharedFlow<QuoteEvent>()
     val event: SharedFlow<QuoteEvent> = _event.asSharedFlow()
 
-    fun getQuotesByCategory(category: String) {
+    init {
+        category?.let { getQuotesByCategory(it) }
+    }
+
+    private fun getQuotesByCategory(category: String) {
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
             try {
                 quoteRepository.getQuotesByCategory(category).collect { result ->
-                    _quotes.value = result
+                    _rawQuotes.value = result
                     _isLoading.value = false
                 }
             } catch (e: Exception) {
@@ -63,14 +79,13 @@ class QuotesViewModel @Inject constructor(
 
     fun onFavoriteClicked(quote: Quote) {
         viewModelScope.launch {
-            quoteRepository.isFavorite(quote.quote).collect { isFavorite ->
-                if (isFavorite) {
-                    quoteRepository.deleteQuote(quote)
-                    _event.emit(QuoteEvent.ShowMessage("Quote removed from favorites"))
-                } else {
-                    quoteRepository.insertQuote(quote)
-                    _event.emit(QuoteEvent.ShowMessage("Quote added to favorites"))
-                }
+            val isFavorite = quoteRepository.isFavorite(quote.quote).first()
+            if (isFavorite) {
+                quoteRepository.deleteQuote(quote)
+                _event.emit(QuoteEvent.ShowMessage("Quote removed from favorites"))
+            } else {
+                quoteRepository.insertQuote(quote)
+                _event.emit(QuoteEvent.ShowMessage("Quote added to favorites"))
             }
         }
     }

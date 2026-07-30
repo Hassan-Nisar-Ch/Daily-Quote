@@ -1,8 +1,6 @@
 package com.example.dailyquote.presentation.quotes
 
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
 import com.example.dailyquote.databinding.FragmentQuotesBinding
 import com.example.dailyquote.presentation.base.BaseFragment
 import com.example.dailyquote.presentation.favorites.QuoteAdapter
@@ -21,7 +19,6 @@ class QuotesFragment : BaseFragment<FragmentQuotesBinding, QuotesViewModel>(
 ) {
 
     override val viewModel: QuotesViewModel by viewModels()
-    private val args: QuotesFragmentArgs by navArgs()
 
     private val adapter = QuoteAdapter(
         onShareClick = { viewModel.onShareClicked(it) },
@@ -32,10 +29,11 @@ class QuotesFragment : BaseFragment<FragmentQuotesBinding, QuotesViewModel>(
 
     override fun setUpViews() {
         binding.apply {
-            title.text = args.displayName
+            title.text = viewModel.category?.replaceFirstChar {
+                it.titlecase()
+            }
             rvQuotes.adapter = adapter
         }
-        viewModel.getQuotesByCategory(args.category)
     }
 
     override fun observeData() {

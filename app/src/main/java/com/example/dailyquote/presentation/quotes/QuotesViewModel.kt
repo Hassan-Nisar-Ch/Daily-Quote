@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
 import com.example.dailyquote.domain.repository.QuoteRepository
 import com.example.dailyquote.presentation.home.QuoteEvent
-import com.google.android.material.card.MaterialCardView
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,11 +29,12 @@ class QuotesViewModel @Inject constructor(
     val category: String? = savedStateHandle.get<String>("category")
 
     private val _rawQuotes = MutableStateFlow<List<Quote>>(emptyList())
-    val quotes: StateFlow<List<Quote>> = combine(_rawQuotes, quoteRepository.getFavoriteQuotes()) { remote, favorites ->
-        remote.map { remoteQuote ->
-            remoteQuote.copy(isFavorite = favorites.any { it.quote == remoteQuote.quote })
-        }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    val quotes: StateFlow<List<Quote>> =
+        combine(_rawQuotes, quoteRepository.getFavoriteQuotes()) { remote, favorites ->
+            remote.map { remoteQuote ->
+                remoteQuote.copy(isFavorite = favorites.any { it.quote == remoteQuote.quote })
+            }
+        }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
@@ -87,12 +87,6 @@ class QuotesViewModel @Inject constructor(
                 quoteRepository.insertQuote(quote)
                 _event.emit(QuoteEvent.ShowMessage("Quote added to favorites"))
             }
-        }
-    }
-
-    fun onSaveClicked(view: MaterialCardView) {
-        viewModelScope.launch {
-            _event.emit(QuoteEvent.SaveQuote(view))
         }
     }
 }

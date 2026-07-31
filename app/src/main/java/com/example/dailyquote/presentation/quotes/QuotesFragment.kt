@@ -23,7 +23,10 @@ class QuotesFragment : BaseFragment<FragmentQuotesBinding, QuotesViewModel>(
     private val adapter = QuoteAdapter(
         onShareClick = { viewModel.onShareClicked(it) },
         onCopyClick = { viewModel.onCopyClicked(it) },
-        onSaveClick = { viewModel.onSaveClicked(it) },
+        onSaveClick = { cardView ->
+            val bitmap = getBitmapFromView(cardView)
+            saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
+        },
         onFavoriteClick = { viewModel.onFavoriteClicked(it) }
     )
 
@@ -73,9 +76,9 @@ class QuotesFragment : BaseFragment<FragmentQuotesBinding, QuotesViewModel>(
                     }
 
                     is QuoteEvent.SaveQuote -> {
-                        val bitmap = getBitmapFromView(event.view)
-                        saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
+
                     }
+
                 }
             }
         }

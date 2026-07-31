@@ -36,7 +36,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
             }
 
             btnSave.setOnClickListener {
-                viewModel.onSaveClicked(cvQuoteContainer)
+                viewModel.onSaveClicked()
             }
         }
     }
@@ -100,7 +100,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding, HomeViewModel>(
                     }
 
                     is QuoteEvent.SaveQuote -> {
-                        val bitmap = getBitmapFromView(event.view)
+                        val bitmap = getBitmapFromView(binding.cvQuoteContainer)
                         saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
                     }
                 }

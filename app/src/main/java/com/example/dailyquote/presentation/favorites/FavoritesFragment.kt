@@ -1,8 +1,6 @@
 package com.example.dailyquote.presentation.favorites
 
-import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.example.dailyquote.R
 import com.example.dailyquote.databinding.FragmentFavoritesBinding
 import com.example.dailyquote.presentation.base.BaseFragment
 import com.example.dailyquote.presentation.home.QuoteEvent
@@ -24,7 +22,10 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
     private val adapter = QuoteAdapter(
         onShareClick = { viewModel.onShareClicked(it) },
         onCopyClick = { viewModel.onCopyClicked(it) },
-        onSaveClick = { viewModel.onSaveClicked(it) },
+        onSaveClick = { cardView ->
+            val bitmap = getBitmapFromView(cardView)
+            saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
+        },
         onFavoriteClick = { viewModel.onFavoriteClicked(it) }
     )
 
@@ -51,13 +52,7 @@ class FavoritesFragment : BaseFragment<FragmentFavoritesBinding, FavoritesViewMo
                     }
 
                     is QuoteEvent.SaveQuote -> {
-                        val bitmap = getBitmapFromView(event.view)
-                        saveBitmap(requireContext(), bitmap, "quote_${System.currentTimeMillis()}")
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.quote_saved_successfully),
-                            Toast.LENGTH_SHORT
-                        ).show()
+
                     }
 
                     is QuoteEvent.ShowMessage -> {

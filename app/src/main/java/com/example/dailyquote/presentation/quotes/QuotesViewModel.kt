@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
 import com.example.dailyquote.domain.repository.QuoteRepository
-import com.example.dailyquote.presentation.home.QuoteEvent
+import com.example.dailyquote.presentation.common.QuoteEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -53,13 +53,13 @@ class QuotesViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
+
             try {
-                quoteRepository.getQuotesByCategory(category).collect { result ->
-                    _rawQuotes.value = result
-                    _isLoading.value = false
-                }
+                val result = quoteRepository.getQuotesByCategory(category)
+                _rawQuotes.value = result
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error"
+            } finally {
                 _isLoading.value = false
             }
         }

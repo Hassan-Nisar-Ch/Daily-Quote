@@ -1,4 +1,4 @@
-package com.example.dailyquote.presentation.home
+package com.example.dailyquote.presentation.common
 
 sealed class QuoteEvent {
     data class ShareQuote(val quote: String, val author: String) : QuoteEvent()

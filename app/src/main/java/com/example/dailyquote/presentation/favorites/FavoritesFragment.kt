@@ -3,7 +3,7 @@ package com.example.dailyquote.presentation.favorites
 import androidx.fragment.app.viewModels
 import com.example.dailyquote.databinding.FragmentFavoritesBinding
 import com.example.dailyquote.presentation.base.BaseFragment
-import com.example.dailyquote.presentation.home.QuoteEvent
+import com.example.dailyquote.presentation.common.QuoteEvent
 import com.example.dailyquote.util.copyToClipboard
 import com.example.dailyquote.util.getBitmapFromView
 import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle

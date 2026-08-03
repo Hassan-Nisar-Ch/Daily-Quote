@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import com.example.dailyquote.R
 import com.example.dailyquote.databinding.FragmentHomeBinding
 import com.example.dailyquote.presentation.base.BaseFragment
+import com.example.dailyquote.presentation.common.QuoteEvent
 import com.example.dailyquote.util.copyToClipboard
 import com.example.dailyquote.util.getBitmapFromView
 import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle

@@ -4,8 +4,8 @@ import com.example.dailyquote.domain.model.Quote
 import kotlinx.coroutines.flow.Flow
 
 interface QuoteRepository {
-    suspend fun getQuoteOfTheDay(): Flow<List<Quote>>
-    suspend fun getQuotesByCategory(category: String): Flow<List<Quote>>
+    suspend fun getQuoteOfTheDay(): List<Quote>
+    suspend fun getQuotesByCategory(category: String): List<Quote>
     fun getFavoriteQuotes(): Flow<List<Quote>>
     suspend fun insertQuote(quote: Quote)
     suspend fun deleteQuote(quote: Quote)

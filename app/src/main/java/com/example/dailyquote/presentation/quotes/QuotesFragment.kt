@@ -1,10 +1,11 @@
 package com.example.dailyquote.presentation.quotes
 
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.example.dailyquote.databinding.FragmentQuotesBinding
 import com.example.dailyquote.presentation.base.BaseFragment
 import com.example.dailyquote.presentation.favorites.QuoteAdapter
-import com.example.dailyquote.presentation.home.QuoteEvent
+import com.example.dailyquote.presentation.common.QuoteEvent
 import com.example.dailyquote.util.copyToClipboard
 import com.example.dailyquote.util.getBitmapFromView
 import com.example.dailyquote.util.launchAndRepeatWithViewLifecycle
@@ -48,14 +49,19 @@ class QuotesFragment : BaseFragment<FragmentQuotesBinding, QuotesViewModel>(
 
         launchAndRepeatWithViewLifecycle {
             viewModel.isLoading.collect { isLoading ->
-                // Add a progress bar if needed in layout
+                binding.progressBar.isVisible = isLoading
             }
         }
 
         launchAndRepeatWithViewLifecycle {
             viewModel.error.collect { error ->
                 if (error != null) {
-                    showToast(error)
+                    binding.tvError.text = error
+                    binding.tvError.isVisible = true
+                    binding.rvQuotes.isVisible = false
+                } else {
+                    binding.tvError.isVisible = false
+                    binding.rvQuotes.isVisible = true
                 }
             }
         }

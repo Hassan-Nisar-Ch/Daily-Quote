@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
 import com.example.dailyquote.domain.repository.QuoteRepository
+import com.example.dailyquote.presentation.common.QuoteEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,9 +24,10 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _rawQuote = MutableStateFlow<Quote?>(null)
-    val quote: StateFlow<Quote?> = combine(_rawQuote, quoteRepository.getFavoriteQuotes()) { raw, favorites ->
-        raw?.copy(isFavorite = favorites.any { it.quote == raw.quote })
-    }.stateIn(viewModelScope, SharingStarted.Lazily, null)
+    val quote: StateFlow<Quote?> =
+        combine(_rawQuote, quoteRepository.getFavoriteQuotes()) { raw, favorites ->
+            raw?.copy(isFavorite = favorites.any { it.quote == raw.quote })
+        }.stateIn(viewModelScope, SharingStarted.Lazily, null)
 
     private val currentQuote: Quote? get() = quote.value
 
@@ -46,13 +48,13 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _isLoading.value = true
             _error.value = null
+
             try {
-                quoteRepository.getQuoteOfTheDay().collect { quotes ->
-                    _rawQuote.value = quotes.firstOrNull()
-                    _isLoading.value = false
-                }
+                val quotes = quoteRepository.getQuoteOfTheDay()
+                _rawQuote.value = quotes.firstOrNull()
             } catch (e: Exception) {
                 _error.value = e.message ?: "Unknown error"
+            } finally {
                 _isLoading.value = false
             }
         }

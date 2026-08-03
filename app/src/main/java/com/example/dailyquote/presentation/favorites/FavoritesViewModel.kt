@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dailyquote.domain.model.Quote
 import com.example.dailyquote.domain.repository.QuoteRepository
-import com.example.dailyquote.presentation.home.QuoteEvent
+import com.example.dailyquote.presentation.common.QuoteEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

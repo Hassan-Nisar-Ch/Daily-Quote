@@ -33,7 +33,7 @@ class QuoteAdapter(
         holder.binding.apply {
             tvQuoteText.text = quote.quote
             tvQuoteAuthor.text = quote.author
-            
+
             val favoriteIcon = if (quote.isFavorite) {
                 R.drawable.ic_fav
             } else {

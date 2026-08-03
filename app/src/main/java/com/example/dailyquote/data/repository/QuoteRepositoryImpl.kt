@@ -16,14 +16,12 @@ class QuoteRepositoryImpl @Inject constructor(
     private val quoteDao: QuoteDao
 ) : QuoteRepository {
 
-    override suspend fun getQuoteOfTheDay(): Flow<List<Quote>> = flow {
-        val quotes = apiService.getQuoteOfTheDay()
-        emit(quotes.map { it.toDomain() })
+    override suspend fun getQuoteOfTheDay(): List<Quote> {
+        return apiService.getQuoteOfTheDay().map { it.toDomain() }
     }
 
-    override suspend fun getQuotesByCategory(category: String): Flow<List<Quote>> = flow {
-        val quotes = apiService.getQuotesByCategory(category)
-        emit(quotes.map { it.toDomain() })
+    override suspend fun getQuotesByCategory(category: String): List<Quote> {
+        return apiService.getQuotesByCategory(category).map { it.toDomain() }
     }
 
     override fun getFavoriteQuotes(): Flow<List<Quote>> {
